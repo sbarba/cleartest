@@ -17,11 +17,11 @@ class _g(object):
     '''
     Stores globals, e.g. _g.clargs
     '''
-    script_run = None
-    overall_run = None
-    clargs = None
-    verbosity = 2
-    multi = False
+    script_run = None # The currently running script
+    overall_run = None # The OverallRun object
+    clargs = None # Command-line args
+    verbosity = 2 # 2: normal, 1: minimal, 0: quiet
+    multi = False # This gets set to True in go() if we're running more than 1 script.
 
 
 class _Run(object):
@@ -128,6 +128,8 @@ class _Run(object):
         Displays summary information when a script run is complete.
         '''
         if _g.verbosity < 2 and (self.failures or self.stack_traces):
+            if _g.verbosity == 1: _Newline.make()
+            _Newline.make()
             for failure in self.failures:
                 self.print_failure(failure)
                 _Newline.make()
@@ -159,11 +161,11 @@ class _Run(object):
             print(colorama.Fore.RESET + _timestamp(datetime.datetime.utcnow()))
 
     def print_failure(self, failure):
-        print(colorama.Fore.MAGENTA + 'SFailure at line {} in {}.'.format(failure['line'], failure['script']))
+        print(colorama.Fore.YELLOW + 'Failure at line {} in {}.'.format(failure['line'], failure['script']))
         if 'got' in failure:
-            print(colorama.Fore.MAGENTA + '#      got:', failure['got'])
+            print(colorama.Fore.YELLOW + '#      got:', failure['got'])
         if 'expected' in failure:
-            print(colorama.Fore.MAGENTA + '# expected:', failure['expected'])
+            print(colorama.Fore.YELLOW + '# expected:', failure['expected'])
 
 
 class _OverallRun(_Run):
@@ -183,8 +185,6 @@ class _OverallRun(_Run):
         Displays overview information at the start of overall run.
         '''
         print(colorama.Fore.RESET + _datetimestamp(self.start_time))
-        if not _g.multi and _g.clargs.quiet:
-            _Newline.make()
         if _g.multi or _g.clargs.parallel:
             if _g.multi:
                 _Newline.make()
@@ -227,7 +227,7 @@ class _OverallRun(_Run):
         if _g.verbosity < 2:
             for failure in self.failures:
                 self.print_failure(failure)
-                print
+                print()
             for stack_trace in self.stack_traces:
                 print(colorama.Fore.MAGENTA + stack_trace)
             _Newline.set(False)
