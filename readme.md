@@ -774,11 +774,10 @@ def test_main(plan=1):
 Produces:
 
 ```
-1..2
+1..1
 ok 1 - global name 'undefined_variable' is not defined
-ok 2 - This passes.
 
-# 2 passed, 0 failed.
+# 1 passed, 0 failed.
 ```
 
 Notice how we use `fail` in the `try` block in case an exception is *not* thrown.
