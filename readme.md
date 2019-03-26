@@ -767,9 +767,7 @@ def expected_exception():
     except Exception as e:
         equals(str(e), "global name 'undefined_variable' is not defined", str(e))
 
-    ok(True, 'This passes.')
-
-def test_main(plan=2):
+def test_main(plan=1):
     expected_exception()
 ```
 
@@ -819,9 +817,6 @@ def httpbin(case):
 def test_main(plan=len(cases)):
     for case in cases:
         httpbin(case)
-
-if __name__ == '__main__':
-    go()
 ```
 
 Produces:
