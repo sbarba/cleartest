@@ -441,7 +441,7 @@ def _runtests(scripts):
     return _g.overall_run
 
 
-def _parse_cl(paths=None, suite_file=None, recursive=None, parallel=None, minimal=None, quiet=None, timestamp=None):
+def _parse_cl(paths=None, suite_file=None, recursive=None, parallel=None, minimal=None, quiet=None, timestamp=None, strip=False):
     '''
     Parses the command line for arguments and figures out which scripts to run.
     Called from go().
@@ -454,6 +454,7 @@ def _parse_cl(paths=None, suite_file=None, recursive=None, parallel=None, minima
     parser.add_argument('--minimal', '-m', action='store_true', help='Minimal output, i.e. dots & letters')
     parser.add_argument('--quiet', '-q', action='store_true', help='Quiet output, i.e. overview & summary information only')
     parser.add_argument('--timestamp', '-t', action='store_true', help='Print time stamp between each script.')
+    parser.add_argument('--strip', '-s', action='store_true', help='Strip color from output. Removes color escape sequences from logged output.')
     _g.clargs = parser.parse_args()
 
     if paths: _g.clargs.paths = paths
@@ -463,6 +464,7 @@ def _parse_cl(paths=None, suite_file=None, recursive=None, parallel=None, minima
     if minimal: _g.clargs.minimal = minimal
     if quiet: _g.clargs.quiet = quiet
     if timestamp: _g.clargs.timestamp = timestamp
+    if strip: _g.clargs.strip = strip
 
     # May remove -q & -m in favor of -v 0 & -v 1.
     if _g.clargs.quiet: _g.verbosity = 0
@@ -623,15 +625,17 @@ def _runtest_worker(script):
     return _runtests([script])
 
 
-def go(paths=None, suite_file=None, recursive=None, parallel=None, minimal=None, quiet=None, timestamp=None):
+def go(paths=None, suite_file=None, recursive=None, parallel=None, minimal=None, quiet=None, timestamp=None, strip=False):
     '''
     A wrapper for _runtests. Necessary for handling parallel runs, but serial runs are
     wrapped as well. Execution starts here.
     '''
-    colorama.init()
     _g.overall_run = _OverallRun()
 
-    _g.overall_run.scripts, _g.clargs = _parse_cl(paths, suite_file, recursive, parallel, minimal, quiet, timestamp)
+    _g.overall_run.scripts, _g.clargs = _parse_cl(paths, suite_file, recursive, parallel, minimal, quiet, timestamp, strip)
+
+    colorama.init(strip=_g.clargs.strip)
+
     if _g.clargs.parallel and platform.system() == 'Windows':
         sys.exit('Parallel testing is not supported on Windows.')
 

@@ -346,6 +346,10 @@ ok 2
 
 This option does nothing with quiet `-q` or minimal `-m` output or when running a single script.
 
+#### --strip, -s
+
+To strip color from output, use the `-s` argument. You'll need to do this when redirecting output so that escape sequences don't show up at destinations like log files or `more`. This is done in the [logging example](#logging-example) below.
+
 #### --parallel [PARALLEL], -p [PARALLEL]
 
 To run tests scripts in parallel, use the -p argument. See the next section for details.
@@ -416,46 +420,47 @@ go()
 That's it. It imports the `go` function and calls it. What it doesn't show is that `go()` returns a `Run` object. The `Run` object contains our overall results and the results of each script in `script_runs`. Let's make our own runner which saves the `Run` object in a variable we'll call `results`. Then we'll print its contents.
 
 ```
+from __future__ import print_function
 from cleartest import go
 results = go()
 
-print "\nContents of TestRun object"
-print "--------------------------"
+print("\nContents of TestRun object")
+print("--------------------------")
 
 # Overall object
-print 'name:', results.name
-print 'start_time:', results.start_time
-print 'end_time:', results.end_time
-print 'time_elapsed:', results.time_elapsed
-print 'parallel:', results.parallel
-print 'plan:', results.plan
-print 'ran:', results.ran
-print 'passed:', results.passed
-print 'failed:', results.failed
-print 'errors:', results.errors
-print 'underrun:', results.underrun
-print 'overrun:', results.overrun
-print 'script_runs:', results.script_runs
-print 'failures:', results.failures
-print 'stack_traces:', results.stack_traces
-print 'complete_failures:', results.complete_failures
-print
+print('name:', results.name)
+print('start_time:', results.start_time)
+print('end_time:', results.end_time)
+print('time_elapsed:', results.time_elapsed)
+print('parallel:', results.parallel)
+print('plan:', results.plan)
+print('ran:', results.ran)
+print('passed:', results.passed)
+print('failed:', results.failed)
+print('errors:', results.errors)
+print('underrun:', results.underrun)
+print('overrun:', results.overrun)
+print('script_runs:', results.script_runs)
+print('failures:', results.failures)
+print('stack_traces:', results.stack_traces)
+print('complete_failures:', results.complete_failures)
+print()
 for script_run in results.script_runs:
-    print 'name:', script_run.name
-    print 'path:', script_run.path
-    print 'start_time:', script_run.start_time
-    print 'end_time:', script_run.end_time
-    print 'time_elapsed:', script_run.time_elapsed
-    print 'plan:', script_run.plan
-    print 'ran:', script_run.ran
-    print 'passed:', script_run.passed
-    print 'failed:', script_run.failed
-    print 'errors:', script_run.errors
-    print 'underrun:', script_run.underrun
-    print 'overrun:', script_run.overrun
-    print 'failures:', script_run.failures
-    print 'stack_traces:', script_run.stack_traces
-    print
+    print('name:', script_run.name)
+    print('path:', script_run.path)
+    print('start_time:', script_run.start_time)
+    print('end_time:', script_run.end_time)
+    print('time_elapsed:', script_run.time_elapsed)
+    print('plan:', script_run.plan)
+    print('ran:', script_run.ran)
+    print('passed:', script_run.passed)
+    print('failed:', script_run.failed)
+    print('errors:', script_run.errors)
+    print('underrun:', script_run.underrun)
+    print('overrun:', script_run.overrun)
+    print('failures:', script_run.failures)
+    print('stack_traces:', script_run.stack_traces)
+    print()
 ```
 
 Let's call it custom_runner.py and run it against a couple of sample scripts, e.g.
@@ -568,7 +573,7 @@ if serial_run.ran == 2084:
     parallel_run = go(parallel=1, suite_file='test_suite.txt')
 
 if parallel_run.passed == serial_run.passed == parallel_run.plan == serial_run.plan
-    print 'Deploy!'
+    print('Deploy!')
 ```
 
 Here's a simplified example of a runner that runs three sets of tests and reports the passing percentage of each to a Slack channel:
@@ -611,20 +616,23 @@ This runner sends *all* of its output to STDOUT and to a log file named with a t
 class Logger(object):
     def __init__(self):
         self.terminal = sys.stdout
-        self.log = open(datetime.datetime.utcnow().strftime('%Y.%m.%d-%H.%M.%S.%f.log'), 'w', 0)
+        self.log = open(datetime.datetime.utcnow().strftime('%Y.%m.%d-%H.%M.%S.%f.log'), 'wb', buffering=0)
 
     def write(self, message):
         self.terminal.write(message)
-        self.log.write(message)
+        if sys.version_info[0] < 3:
+            self.log.write(message)
+        else:
+            self.log.write(bytes(message, 'utf-8'))
 
     def flush(self):
         pass
 
 sys.stdout = Logger()
 
-print ' '.join(sys.argv) # Log the command line.
+print(' '.join(sys.argv)) # Log the command line.
 from cleartest import go
-results = go()
+results = go(strip=True)
 ```
 
 Note that **cleartest** does not use STDERR for errors that it handles.
