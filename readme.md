@@ -21,7 +21,7 @@
 * [Custom Runners and Saving Results](#custom-runners-and-saving-results)
 * [Exception Handling](#exception-handling)
 * [Class-Based Test Organization](#class-based-test-organization)
-* [Data-Driven Testing](#data-driven-testing)
+* [Data-Driven (Parameterized) Testing](#data-driven-testing)
 * [Other Things to Know](#other-things-to-know)
 
 ---
