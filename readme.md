@@ -505,7 +505,6 @@ underrun: False
 overrun: False
 failures: [{'expected': 3, 'got': 4, 'line': 10, 'script': '/path/to/test_1.py'}]
 stack_traces: []
-complete_failure: None
 
 name: test_2
 path: /path/to/test_2.py
@@ -521,7 +520,6 @@ underrun: True
 overrun: False
 failures: []
 stack_traces: ['Traceback (most recent call last):\n  File "/path/to/cleartest.py", line 226, in _run\n    return test_function(*args,**kwargs)\n  File "/path/to/test_2.py", line 7, in unexpected_exception\n    throw_exception = 1 / 0\nZeroDivisionError: integer division or modulo by zero\n']
-complete_failure: None
 ```
 
 First we see the contents of the overall `Run` object. Then we see the results of each script in `results.script_runs`. Each item in this list is a `Run` object itself.
