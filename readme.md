@@ -385,7 +385,7 @@ $ runtests functional/ -m -p 10
 
 ## Custom Runners and Saving Results
 
-cleartest gives you full access to a test script's results via its `Run` object. You can access those results, save, and report on them.  Here are the properties of a `Run` object:
+cleartest gives you full access to test results via its `Run` object. This overall `Run` object also contains a `Run` object for each script. You can access those results, save, and report on them. Here are the properties of a script's `Run` object:
 
 * **name** - The module name of the script, e.g. "test_conditional"
 * **path** - The path to the script, e.g. "/path/to/test_conditional.py"
@@ -402,7 +402,7 @@ cleartest gives you full access to a test script's results via its `Run` object.
 * **end_time** - A UTC datetime.datetime object set at the end of the run
 * **time_elapsed** - A datetime.timedelta object of the duration of the run
 
-#### The overall `Run` object also has the following properties:
+#### The _overall_ `Run` object also has the following properties:
 
 * **parallel** - # of instances per script if run in parallel (e.g. -p 2 will set this to 2.)
 * **script_runs** - A list of `Run` objects, one for each script run
@@ -417,7 +417,7 @@ from cleartest import go
 go()
 ```
 
-That's it. It imports the `go` function and calls it. What it doesn't show is that `go()` returns a `Run` object. The `Run` object contains our overall results and the results of each script in `script_runs`. Let's make our own runner which saves the `Run` object in a variable we'll call `results`. Then we'll print its contents.
+That's it. It imports the `go` function and calls it. What it doesn't show is that `go()` returns an overall `Run` object. The `Run` object contains our overall results and the results of each script in `script_runs`. Let's make our own runner which saves the `Run` object in a variable we'll call `results`. Then we'll print its contents.
 
 ```
 from __future__ import print_function
@@ -544,6 +544,7 @@ Command-line arguments (paths, -f, -r, -p, -m, -q, -t) still apply to custom run
 * **minimal** - A boolean
 * **quiet** - A boolean
 * **timestamp** - A boolean
+* **strip** - A boolean
 
 Examples:
 
@@ -555,6 +556,7 @@ results=go(parallel=64)
 results=go(minimal=True)
 results=go(quiet=True)
 results=go(timestamp=True)
+results=go(strip=True)
 
 results=go(paths=['load/'], parallel=16, recursive=True)
 results=go(parallel=0, recursive=False)
