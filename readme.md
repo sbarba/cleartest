@@ -385,7 +385,7 @@ $ runtests functional/ -m -p 10
 
 ## Custom Runners and Saving Results
 
-cleartest gives you full access to test results via its `Run` object. This overall `Run` object also contains a `Run` object for each script. You can access those results, save, and report on them. Here are the properties of a script's `Run` object:
+cleartest gives you full access to test results via its `Overall Run` object which, itself, contains a `Run` object for each script. Here are the properties of a script's `Run` object:
 
 * **name** - The module name of the script, e.g. "test_conditional"
 * **path** - The path to the script, e.g. "/path/to/test_conditional.py"
@@ -402,7 +402,7 @@ cleartest gives you full access to test results via its `Run` object. This overa
 * **end_time** - A UTC datetime.datetime object set at the end of the run
 * **time_elapsed** - A datetime.timedelta object of the duration of the run
 
-#### The _overall_ `Run` object also has the following properties:
+#### The `Overall Run` object has all the same properties plus these:
 
 * **parallel** - # of instances per script if run in parallel (e.g. -p 2 will set this to 2.)
 * **script_runs** - A list of `Run` objects, one for each script run
@@ -410,22 +410,22 @@ cleartest gives you full access to test results via its `Run` object. This overa
 
 ---
 
-To see how to use the `Run` object let's first have a look at **runtests**, the default cleartest runner:
+To see how to use the these objects let's first have a look at **runtests**, the default cleartest runner:
 
 ```
 from cleartest import go
 go()
 ```
 
-That's it. It imports the `go` function and calls it. What it doesn't show is that `go()` returns an overall `Run` object. The `Run` object contains our overall results and the results of each script in `script_runs`. Let's make our own runner which saves the `Run` object in a variable we'll call `results`. Then we'll print its contents.
+That's it. It imports the `go` function and calls it. What it doesn't show is that `go()` returns an `Overall Run` object which contains our overall results and the results of each script in `script_runs`. Let's make our own runner which saves the `Overall Run` object in a variable we'll call `results`. Then we'll print its contents.
 
 ```
 from __future__ import print_function
 from cleartest import go
 results = go()
 
-print("\nContents of TestRun object")
-print("--------------------------")
+print("\nContents of Run objects")
+print("-----------------------")
 
 # Overall object
 print('name:', results.name)
@@ -472,8 +472,8 @@ $ python custom_runner.py test_1.py test_2.py
 We see our usual output plus all the things we explicitly printed:
 
 ```
-Contents of TestRun object
---------------------------
+Contents of Run objects
+-----------------------
 name: Overall
 start_time: 2084-01-03 10:00:00.001000
 end_time: 2084-01-03 10:00:00.005000
@@ -522,13 +522,13 @@ failures: []
 stack_traces: ['Traceback (most recent call last):\n  File "/path/to/cleartest.py", line 226, in _run\n    return test_function(*args,**kwargs)\n  File "/path/to/test_2.py", line 7, in unexpected_exception\n    throw_exception = 1 / 0\nZeroDivisionError: integer division or modulo by zero\n']
 ```
 
-First we see the contents of the overall `Run` object. Then we see the results of each script in `results.script_runs`. Each item in this list is a `Run` object itself.
+First we see the contents of the `Overall Run` object. Then we see the results of each script in `results.script_runs`.
 
 Of course you can do more than just print your results; Save them to a database, put them on a web page, email them, or post them to a group chat. Do as you like.
 
 ### A couple of things to note:
 
-* The overall `Run` object has a consolidated list of failures and stack traces from all scripts.
+* The `Overall Run` object has a consolidated list of failures and stack traces from all scripts.
 * `stack_traces` only stores the traces from unexpected exceptions.
 
 ---
