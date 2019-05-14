@@ -42,7 +42,7 @@ def test_main(plan=2):
     ok(2 + 2 == 4, "This also passes.")
 ```
 
-To run it:
+Assuming we've saved the code above in a file called "test_clear.py", we can run it like this:
 
 ```
 $ runtests test_clear.py
@@ -559,7 +559,7 @@ results=go(timestamp=True)
 results=go(strip=True)
 
 results=go(paths=['load/'], parallel=16, recursive=True)
-results=go(parallel=0, recursive=False)
+results=go(minimal=True, recursive=False)
 results=go(paths=['ui_tests/', 'security_tests/', 'load_tests/test_basic*', 'test_initialize.py'], timestamp=True)
 ```
 
