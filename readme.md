@@ -22,6 +22,7 @@
 * [Exception Handling](#exception-handling)
 * [Class-Based Test Organization](#class-based-test-organization)
 * [Data-Driven (Parameterized) Testing](#data-driven-testing)
+* [Function Summary](#function-summary)
 * [Other Things to Know](#other-things-to-know)
 
 ---
@@ -42,7 +43,7 @@ def test_main(plan=2):
     ok(2 + 2 == 4, "This also passes.")
 ```
 
-Assuming we've saved the code above in a file called "test_clear.py", we can run it like this:
+Assuming we've saved the code above in a file called "test_clear.py", we can run it with cleartest's default test runner, *runtests*, like this:
 
 ```
 $ runtests test_clear.py
@@ -749,7 +750,7 @@ def test_main():
 
 This will run `test_this`, `test_that`, and any other functions that may be in `ExceptionalTests` in random order. 
 
-Decorate instance methods with `@skip` if you want `run_class` to ignore them.
+Import and decorate instance methods with `@skip` if you want `run_class` to ignore them.
 
 ```
 @skip
@@ -843,6 +844,21 @@ To summarize:
 * Notice how we let the length of the `cases` list calculate the plan for us.
 
 For more complex scenarios it usually makes sense to move the data out of your test scripts and into a separate file that you import. For very complex scenarios it's sometimes best to read test data out of a database.
+
+---
+
+## Function Summary
+
+Here is a list of all the cleartest functions you can import and use with links to their explanations:
+
+#### The Test Functions
+
+* [ok, not_ok, equals, not_equals, less_than, greater_than, is_type, isnt_type, is_in, isnt_in, succeed, fail](#the-test-functions)
+
+#### Other functions
+
+* [go](#making-test-scripts-executable), [ctc](#exception-handling), [Ctc](#class-based-exception-handling), [run_class](#class-based-test-organization), [skip](#class-based-test-organization)
+
 
 ---
 
