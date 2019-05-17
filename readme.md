@@ -849,15 +849,19 @@ For more complex scenarios it usually makes sense to move the data out of your t
 
 ## Function Summary
 
-Here is a list of all the cleartest functions you can import and use with links to their explanations:
+Here's a list of the cleartest functions (some of which are decorators) you can import and use:
 
-#### The Test Functions
+#### Test Functions
 
 * [ok, not_ok, equals, not_equals, less_than, greater_than, is_type, isnt_type, is_in, isnt_in, succeed, fail](#the-test-functions)
 
 #### Other functions
 
-* [go](#making-test-scripts-executable), [ctc](#exception-handling), [Ctc](#class-based-exception-handling), [run_class](#class-based-test-organization), [skip](#class-based-test-organization)
+* [go](#making-test-scripts-executable) - To make test scripts executable
+* [ctc](#exception-handling) - To handle exceptions by function
+* [Ctc](#class-based-exception-handling) - To handle exceptions by class
+* [run_class](#class-based-test-organization) - To run every function in a class
+* [skip](#class-based-test-organization) - To have `run_class` skip a function 
 
 
 ---
