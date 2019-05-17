@@ -753,6 +753,10 @@ This will run `test_this`, `test_that`, and any other functions that may be in `
 Import and decorate instance methods with `@skip` if you want `run_class` to ignore them.
 
 ```
+from cleartest import run_class, skip
+
+class ExceptionalTests():
+
 @skip
 def utility_function_containing_no_tests()
     ...
@@ -849,7 +853,7 @@ For more complex scenarios it usually makes sense to move the data out of your t
 
 ## Function Summary
 
-Here's a list of the cleartest functions (some of which are decorators) you can import and use:
+Here are the cleartest functions (some of which are decorators) you can import and use:
 
 #### Test Functions
 
@@ -858,10 +862,10 @@ Here's a list of the cleartest functions (some of which are decorators) you can 
 #### Other functions
 
 * [go](#making-test-scripts-executable) - To make test scripts executable
-* [ctc](#exception-handling) - To handle exceptions by function
-* [Ctc](#class-based-exception-handling) - To handle exceptions by class
+* [@ctc](#exception-handling) - To handle exceptions by function
+* [@Ctc](#class-based-exception-handling) - To handle exceptions by class
 * [run_class](#class-based-test-organization) - To run every function in a class
-* [skip](#class-based-test-organization) - To have `run_class` skip a function 
+* [@skip](#class-based-test-organization) - To have `run_class` skip a function
 
 
 ---
