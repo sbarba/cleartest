@@ -729,6 +729,37 @@ This will apply `@ctc` to every function in `ExceptionalTests`.
 
 ---
 
+#### Testing for Exceptions
+
+To test expected exceptions use a **try/except** block:
+
+```
+from cleartest import *
+
+def expected_exception():
+    try:
+        new_variable = undefined_variable
+        fail('There should have been an exception here.')
+    except Exception as e:
+        equals(str(e), "global name 'undefined_variable' is not defined", str(e))
+
+def test_main(plan=1):
+    expected_exception()
+```
+
+Produces:
+
+```
+1..1
+ok 1 - global name 'undefined_variable' is not defined
+
+# 1 passed, 0 failed.
+```
+
+Notice how we use `fail` in the `try` block in case an exception is *not* thrown.
+
+---
+
 ## Class-Based Test Organization
 
 As a shortcut, you can use `run_class` to call every method in a class instance in random order.
@@ -763,37 +794,6 @@ def utility_function_containing_no_tests()
 ```
 
 For more control, call the methods individually. Or don't use classes at all.
-
----
-
-#### Testing for Exceptions
-
-To test expected exceptions use a **try/except** block:
-
-```
-from cleartest import *
-
-def expected_exception():
-    try:
-        new_variable = undefined_variable
-        fail('There should have been an exception here.')
-    except Exception as e:
-        equals(str(e), "global name 'undefined_variable' is not defined", str(e))
-
-def test_main(plan=1):
-    expected_exception()
-```
-
-Produces:
-
-```
-1..1
-ok 1 - global name 'undefined_variable' is not defined
-
-# 1 passed, 0 failed.
-```
-
-Notice how we use `fail` in the `try` block in case an exception is *not* thrown.
 
 ---
 
@@ -853,8 +853,6 @@ For more complex scenarios it usually makes sense to move the data out of your t
 
 ## Function Summary
 
-Here are the cleartest functions (some of which are decorators) you can import and use:
-
 #### Test Functions
 
 * [ok, not_ok, equals, not_equals, less_than, greater_than, is_type, isnt_type, is_in, isnt_in, succeed, fail](#the-test-functions)
@@ -862,8 +860,8 @@ Here are the cleartest functions (some of which are decorators) you can import a
 #### Other functions
 
 * [go](#making-test-scripts-executable) - To make test scripts executable
-* [@ctc](#exception-handling) - To handle exceptions by function
-* [@Ctc](#class-based-exception-handling) - To handle exceptions by class
+* [@ctc](#exception-handling) - To handle exceptions in a function
+* [@Ctc](#class-based-exception-handling) - To handle exceptions in a class
 * [run_class](#class-based-test-organization) - To run every function in a class
 * [@skip](#class-based-test-organization) - To have `run_class` skip a function
 
