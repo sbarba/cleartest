@@ -5,8 +5,11 @@
 * Minimal boilerplate code
 * Flexible options for discovering and running tests
 * Full code access to results
-* A parallel processing option (except on Windows)
+* A parallel (concurrent) processing option (except on Windows)
+* Synchronized standard & error output
 * Opinions, but few rules on how to structure your code
+
+For more details, read [Why I Made Cleartest](why.md).
 
 ---
 
@@ -864,7 +867,6 @@ For more complex scenarios it usually makes sense to move the data out of your t
 * [@Ctc](#class-based-exception-handling) - To handle exceptions in a class
 * [run_class](#class-based-test-organization) - To run every function in a class
 * [@skip](#class-based-test-organization) - To have `run_class` skip a function
-
 
 ---
 
