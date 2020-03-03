@@ -20,6 +20,7 @@ For more details, read [Why I Made Cleartest](why.md).
 * [Script Structure](#script-structure)
 * [The Test Functions](#the-test-functions)
 * [Organizing and Running Your Scripts](#organizing-and-running-your-scripts)
+* [Arguments](#arguments)
 * [Testing in Parallel](#testing-in-parallel) 
 * [Custom Runners and Saving Results](#custom-runners-and-saving-results)
 * [Exception Handling](#exception-handling)
@@ -273,7 +274,7 @@ $ ./test_individual.py
 
 Of course, you can still run it as an argument to **runtests**, i.e. `$ runtests test_individual.py`.
 
-### Arguments
+## Arguments
 
 #### --recursive, -r
 
