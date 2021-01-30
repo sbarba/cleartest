@@ -43,7 +43,7 @@ def test_main():
 
 cleartest is more concise.
 
-However, you are free to wrap your tests in functions. The main benefit of doing so is exception handling. You're also free to further wrap them in classes. Benefits of that include generalized exception andling and, in the case of cleartest, a built-in option for randomization of test-ordering. cleartest gives you options for both exception handling and randomization. See [Exception Handling](readme.md#exception-handling) and [Class-Based Test Organization](readme.md#class-based-test-organization). The choice is yours. Either way, each test's results are recorded whether it lives in a function or not.
+However, you are free to wrap your tests in functions. The main benefit of doing so is exception handling. You're also free to further wrap them in classes. Benefits of that include generalized exception handling and, in the case of cleartest, a built-in option for randomization of test-ordering. cleartest gives you options for both exception handling and randomization. See [Exception Handling](readme.md#exception-handling) and [Class-Based Test Organization](readme.md#class-based-test-organization). The choice is yours. Either way, each test's results are recorded whether it lives in a function or not.
 
 ### To give you full access to Python
 
