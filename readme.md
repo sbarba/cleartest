@@ -362,10 +362,9 @@ To run tests scripts in parallel, use the -p argument. See the next section for 
 ---
 
 ## Testing in Parallel
+*Supported on non-Windows platforms through Python 3.7.11.*
 
 For load/stress/availability testing or just to save time you can run test scripts in parallel with the `-p` or `--parallel` argument along with the number of instances of each script to run. The default number of instances is 1 so `-p` and `-p 1` are equivalent.
-
-This feature isn't supported on Windows.
 
 Here we launch 100 instances of test_load.py, each in its own process. We also use the minimal (-m) option to avoid the jumbled output parallel runs produce.
 
@@ -419,7 +418,9 @@ To see how to use the these objects let's first have a look at **runtests**, the
 
 ```
 from cleartest import go
-go()
+
+if __name__ == "__main__":
+  go()
 ```
 
 That's it. It imports the `go` function and calls it. What it doesn't show is that `go()` returns an `Overall Run` object which contains our overall results and the results of each script in `script_runs`. Let's make our own runner which saves the `Overall Run` object in a variable we'll call `results`. Then we'll print its contents.
@@ -427,45 +428,47 @@ That's it. It imports the `go` function and calls it. What it doesn't show is th
 ```
 from __future__ import print_function
 from cleartest import go
-results = go()
 
-print("\nContents of Run objects")
-print("-----------------------")
+if __name__ == "__main__":
+    results = go()
 
-# Overall object
-print('name:', results.name)
-print('start_time:', results.start_time)
-print('end_time:', results.end_time)
-print('time_elapsed:', results.time_elapsed)
-print('parallel:', results.parallel)
-print('plan:', results.plan)
-print('ran:', results.ran)
-print('passed:', results.passed)
-print('failed:', results.failed)
-print('errors:', results.errors)
-print('underrun:', results.underrun)
-print('overrun:', results.overrun)
-print('script_runs:', results.script_runs)
-print('failures:', results.failures)
-print('stack_traces:', results.stack_traces)
-print('complete_failures:', results.complete_failures)
-print()
-for script_run in results.script_runs:
-    print('name:', script_run.name)
-    print('path:', script_run.path)
-    print('start_time:', script_run.start_time)
-    print('end_time:', script_run.end_time)
-    print('time_elapsed:', script_run.time_elapsed)
-    print('plan:', script_run.plan)
-    print('ran:', script_run.ran)
-    print('passed:', script_run.passed)
-    print('failed:', script_run.failed)
-    print('errors:', script_run.errors)
-    print('underrun:', script_run.underrun)
-    print('overrun:', script_run.overrun)
-    print('failures:', script_run.failures)
-    print('stack_traces:', script_run.stack_traces)
+    print("\nContents of Run objects")
+    print("-----------------------")
+
+    # Overall object
+    print('name:', results.name)
+    print('start_time:', results.start_time)
+    print('end_time:', results.end_time)
+    print('time_elapsed:', results.time_elapsed)
+    print('parallel:', results.parallel)
+    print('plan:', results.plan)
+    print('ran:', results.ran)
+    print('passed:', results.passed)
+    print('failed:', results.failed)
+    print('errors:', results.errors)
+    print('underrun:', results.underrun)
+    print('overrun:', results.overrun)
+    print('script_runs:', results.script_runs)
+    print('failures:', results.failures)
+    print('stack_traces:', results.stack_traces)
+    print('complete_failures:', results.complete_failures)
     print()
+    for script_run in results.script_runs:
+        print('name:', script_run.name)
+        print('path:', script_run.path)
+        print('start_time:', script_run.start_time)
+        print('end_time:', script_run.end_time)
+        print('time_elapsed:', script_run.time_elapsed)
+        print('plan:', script_run.plan)
+        print('ran:', script_run.ran)
+        print('passed:', script_run.passed)
+        print('failed:', script_run.failed)
+        print('errors:', script_run.errors)
+        print('underrun:', script_run.underrun)
+        print('overrun:', script_run.overrun)
+        print('failures:', script_run.failures)
+        print('stack_traces:', script_run.stack_traces)
+        print()
 ```
 
 Let's call it custom_runner.py and run it against a couple of sample scripts, e.g.
@@ -573,12 +576,13 @@ Here's a simplified example of a runner that runs a suite of tests serially, the
 ```
 from cleartest import go
 
-serial_run = go(suite_file='test_suite.txt')
-if serial_run.ran == 2084:
-    parallel_run = go(parallel=1, suite_file='test_suite.txt')
+if __name__ == "__main__":
+    serial_run = go(suite_file='test_suite.txt')
+    if serial_run.ran == 2084:
+        parallel_run = go(parallel=1, suite_file='test_suite.txt')
 
-if parallel_run.passed == serial_run.passed == parallel_run.plan == serial_run.plan
-    print('Deploy!')
+    if parallel_run.passed == serial_run.passed == parallel_run.plan == serial_run.plan
+        print('Deploy!')
 ```
 
 Here's a simplified example of a runner that runs three sets of tests and reports the passing percentage of each to a Slack channel:
@@ -587,19 +591,20 @@ Here's a simplified example of a runner that runs three sets of tests and report
 from cleartest import go
 import json, requests
 
-data_validation = go(paths=['/path/to/data_validation/'], quiet=True)
-ui = go(paths=['/path/to/ui/'], quiet=True)
-availability = go(paths=['/path/to/availability/'], parallel=16, quiet=True)
+if __name__ == "__main__":
+    data_validation = go(paths=['/path/to/data_validation/'], quiet=True)
+    ui = go(paths=['/path/to/ui/'], quiet=True)
+    availability = go(paths=['/path/to/availability/'], parallel=16, quiet=True)
 
-results = "Data Validation: {:.2%} passed.\n".format(float(data_validation.passed) / data_validation.plan)
-results += "UI: {:.2%} passed.\n".format(float(ui.passed) / ui.plan)
-results += "Availability: {:.2%} passed.".format(float(availability.passed) / availability.plan)
+    results = "Data Validation: {:.2%} passed.\n".format(float(data_validation.passed) / data_validation.plan)
+    results += "UI: {:.2%} passed.\n".format(float(ui.passed) / ui.plan)
+    results += "Availability: {:.2%} passed.".format(float(availability.passed) / availability.plan)
 
-response = requests.post(
-    'https://hooks.slack.com/services/AAAAAAAAA/BBBBBBBBB/CCCCCCCCCCCCCCCCCCCCCCCC',
-    data=json.dumps({'text': results, 'username': 'autobot', 'channel': '#automation'}),   
-    headers={'Content-Type': 'application/json'}
-)
+    response = requests.post(
+        'https://hooks.slack.com/services/AAAAAAAAA/BBBBBBBBB/CCCCCCCCCCCCCCCCCCCCCCCC',
+        data=json.dumps({'text': results, 'username': 'autobot', 'channel': '#automation'}),   
+        headers={'Content-Type': 'application/json'}
+    )
 ```
 
 Output to Slack would look something like this:
@@ -618,6 +623,8 @@ Availability: 100.00% passed.
 This runner sends *all* of its output to STDOUT and to a log file named with a timestamp, e.g, `2084.01.03-05.00.01.001981.log`
 
 ```
+from cleartest import go
+
 class Logger(object):
     def __init__(self):
         self.terminal = sys.stdout
@@ -633,11 +640,10 @@ class Logger(object):
     def flush(self):
         pass
 
-sys.stdout = Logger()
-
-print(' '.join(sys.argv)) # Log the command line.
-from cleartest import go
-results = go(strip=True)
+if __name__ == "__main__":
+    sys.stdout = Logger()
+    print(' '.join(sys.argv)) # Log the command line.
+    results = go(strip=True)
 ```
 
 Note that **cleartest** does not use STDERR for errors that it handles.
