@@ -239,7 +239,7 @@ class _OverallRun(_Run):
             print(colorama.Fore.RESET + 'Scripts with failures:')
             for run in self.script_runs:
                 if run.failed:
-                    print(colorama.Fore.YELLOW + '# {}.py'.format(run.path))
+                    print(colorama.Fore.YELLOW + '# {}'.format(run.path))
 
         if self.errors:
             _Newline.make()
