@@ -53,7 +53,7 @@ Python provides you with most of what you need to structure your test code. The 
 
 A popular idea in testing is that the order of your tests shouldn't matter. As with most things, the truth is more complicated. Often you do need to test an ordered sequence of actions. Other frameworks don't allow you to order your tests and so you're forced to put an entire sequence of actions into a single test. That works, but you lose the granularity of reporting you'd get if you could simply run the actions in order and report the results of each with a test. cleartest allows that.
 
-If you like, you can compress actions into a single test by simply testing the last action or checking state afterward. It also builds in the option of truly randomizing the order of your tests (one framework "randomizes" by running your tests in alphabetical order). The choice is yours. You have full access to Python with cleartest. Nothing is taken from you.
+If you like, you can compress actions into a single test by simply testing the last action or checking state afterward. It also builds in the option of truly randomizing the order of your tests (one framework "randomizes" by running your tests in alphabetical order). The choice is yours. You have full access to Python with cleartest.
 
 ### To ease data-driven/parameterized testing
 
