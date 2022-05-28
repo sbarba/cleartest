@@ -414,7 +414,7 @@ cleartest gives you full access to test results via its `Overall Run` object whi
 
 ---
 
-To see how to use the these objects let's first have a look at **runtests**, the default cleartest runner:
+To see how to use these objects let's first have a look at **runtests**, the default cleartest runner:
 
 ```
 from cleartest import go
@@ -607,7 +607,7 @@ if __name__ == "__main__":
     )
 ```
 
-Output to Slack would look something like this:
+Output to Slack might look something like this:
 
 ```
 autobot APP [05:00 PM]  
@@ -791,7 +791,7 @@ def test_main():
 
 This will run `test_this`, `test_that`, and any other functions that may be in `ExceptionalTests` in random order. 
 
-Import and decorate instance methods with `@skip` if you want `run_class` to ignore them.
+Decorate instance methods with `@skip` if you want `run_class` to ignore them.
 
 ```
 from cleartest import run_class, skip
@@ -889,7 +889,7 @@ Similarly a `not_ok` test will pass if its expression evaluates to something "fa
 
 #### STDOUT and STDERR
 
-**cleartest** does not use STDERR. A simple pipe or redirect will catch all of its output, e.g:
+So that you can easily see when errors occur **cleartest** does not use STDERR. A simple pipe or redirect will catch all of its output, e.g:
 
 ```
 $ runtests smoke/ > temp.txt
