@@ -419,7 +419,7 @@ def _runtests(scripts):
             _g.overall_run.complete_failures.append('{}/{}.py'.format(script['path'], script['module']))
         else:
             try:
-                test_main_default_args = inspect.getargspec(test_main_obj).defaults
+                test_main_default_args = inspect.getfullargspec(test_main_obj).defaults
                 plan = 0
                 if test_main_default_args:
                     plan = test_main_default_args[0]
