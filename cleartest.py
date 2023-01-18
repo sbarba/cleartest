@@ -67,7 +67,7 @@ class _Run(object):
             print(colorama.Fore.RESET + output)
         _Newline.set(True)
 
-    def log_failure(self, stack_frame, got=None, expected=None, message=''):
+    def log_failure(self, stack_frame, got=None, expected=None, message='', ok_test=False, fail_test=False):
         self.ran += 1
         self.failed += 1
         if not self.plan_specified:
@@ -88,17 +88,17 @@ class _Run(object):
             print(colorama.Fore.YELLOW + output)
             print(colorama.Fore.YELLOW + '#   Failure at line %s in %s.' % (line_no, script_name))
 
-        if got and expected:
+        if ok_test:
+            self.failures.append({'script': script_name, 'line': int(line_no), 'got': got})
+            if _g.verbosity == 2:
+                print(colorama.Fore.YELLOW + '#   got:', got)
+        elif fail_test:
+            self.failures.append({'script': script_name, 'line': int(line_no)})
+        else:
             self.failures.append({'script': script_name, 'line': int(line_no), 'got': got, 'expected': expected})
             if _g.verbosity == 2:
                 print(colorama.Fore.YELLOW + '#        got:', got)
                 print(colorama.Fore.YELLOW + '#   expected:', expected)
-        elif got and not expected:
-            self.failures.append({'script': script_name, 'line': int(line_no), 'got': got})
-            if _g.verbosity == 2:
-                print(colorama.Fore.YELLOW + '#   got:', got)
-        else:
-            self.failures.append({'script': script_name, 'line': int(line_no)})
         
         if _g.verbosity == 2:
             print()
@@ -299,7 +299,7 @@ def ok(expression, message=''):
         _g.script_run.log_success(message)
         return True
     else:
-        _g.script_run.log_failure(inspect.stack()[1], message=message)
+        _g.script_run.log_failure(inspect.stack()[1], message=message, ok_test=True)
         return False
 
 
@@ -390,7 +390,7 @@ def succeed(message=''):
 
 
 def fail(message=''):
-    _g.script_run.log_failure(inspect.stack()[1], message=message)
+    _g.script_run.log_failure(inspect.stack()[1], message=message, fail_test=True)
     return False
 
 
