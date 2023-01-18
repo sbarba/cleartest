@@ -253,6 +253,7 @@ To make a test script executable so it can run on its own:
 1. Set the script's permissions to executable (e.g. chmod 755).
 2. Add the appropriate hash-bang line to the top of the script.
 3. Import and call the `go` function under `if __name__ == "__main__"`.
+4. Ensure there's no executable code (other than imports) at the top level of your script.
 
 ```
 #!/usr/bin/env python
