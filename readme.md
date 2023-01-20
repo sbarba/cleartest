@@ -1,6 +1,6 @@
 # cleartest: Straightforward Testing for Python
 
-**cleartest** is a lightweight test automation framework for Python 2.7 and Python 3. It features:
+**cleartest** is a lightweight test automation framework for Python 3. It features:
 * Simple syntax
 * Minimal boilerplate code
 * Flexible options for discovering and running tests
